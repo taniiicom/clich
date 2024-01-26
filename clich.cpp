@@ -55,10 +55,11 @@ class User {
 
     InputOption option;
     option.on_enter = screen.ExitLoopClosure();
+    option.multiline = false;
 
     // The basic input components:
     Component input_name = Input(&name, key, option);
-    Component button = Button(" OK > ", [&] {
+    Component button = Button("   NEXT >   ", [&] {
       // ここにボタンが押された時の処理を書く
       screen.Exit();
     });
@@ -73,9 +74,10 @@ class User {
     auto renderer = Renderer(component, [&] {
       return vbox({
                  hbox(text(" " + key + " : "), input_name->Render()),
-                 separator(), text(" " + key + " : " + name),
-                 // separator(),
-                 // hbox(button->Render()),
+                 separator(),
+                 text(" " + key + " : " + name),
+                 separator(),
+                 hbox(text("   "), button->Render()),
              }) |
              border;
     });
@@ -94,7 +96,7 @@ int main() {
   User user("user");
 
   // 送信先を取得
-  User to_user("to");
+  User to("to");
 
   if (m.getMode() == 0) {
     // PULL モード
