@@ -13,17 +13,17 @@ class Mode {
   int mode = 0;
 
  public:
-  explicit Mode() { SelectMode(); }
+  explicit Mode() { selectMode(); }
 
   int getMode() const { return mode; }
 
-  void SelectMode() {
+  void selectMode() {
     using namespace ftxui;
     auto screen = ScreenInteractive::TerminalOutput();
 
     std::vector<std::string> entries = {
-        "CLIENT",
-        "SERVER",
+        "PULL: 受信",
+        "PUSH: 送信",
     };
     int selected = 0;
 
@@ -41,16 +41,66 @@ class Mode {
   }
 };
 
-int main() {
-  // モード選択画面を表示
+class User {
+ private:
+  std::string name;
 
+ public:
+  explicit User(const std::string key) { fetchName(key); }
+
+  void fetchName(std::string key) {
+    using namespace ftxui;
+
+    auto screen = ScreenInteractive::TerminalOutput();
+
+    InputOption option;
+    option.on_enter = screen.ExitLoopClosure();
+
+    // The basic input components:
+    Component input_name = Input(&name, key, option);
+    Component button = Button(" OK > ", [&] {
+      // ここにボタンが押された時の処理を書く
+      screen.Exit();
+    });
+
+    // The component tree:
+    auto component = Container::Vertical({
+        input_name,
+        button,
+    });
+
+    // Tweak how the component tree is rendered:
+    auto renderer = Renderer(component, [&] {
+      return vbox({
+                 hbox(text(" " + key + " : "), input_name->Render()),
+                 separator(), text(" " + key + " : " + name),
+                 // separator(),
+                 // hbox(button->Render()),
+             }) |
+             border;
+    });
+
+    screen.Loop(renderer);
+
+    return;
+  }
+};
+
+int main() {
+  // モード選択を取得
   Mode m{};
 
+  // ユーザ情報を取得
+  User user("user");
+
+  // 送信先を取得
+  User to_user("to");
+
   if (m.getMode() == 0) {
-    // CLIENT モード
+    // PULL モード
 
   } else {
-    // SERVER モード
+    // PUSH モード
   }
 
   return 0;
