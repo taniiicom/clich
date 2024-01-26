@@ -6,7 +6,16 @@
 #include <ftxui/component/screen_interactive.hpp>  // For ScreenInteractive
 #include <ftxui/component/screen_interactive.hpp>  // for Component, ScreenInteractive
 #include <ftxui/dom/elements.hpp>  // for text, hbox, separator, Element, operator|, vbox, border
+#include <ftxui/dom/elements.hpp>  // for text, bgcolor, color, vbox, hbox, separator, operator|, Elements, Element, Fit, border
+#include <ftxui/dom/node.hpp>      // for Render
+#include <ftxui/screen/color.hpp>  // for Color, Color::Black, Color::Blue, Color::BlueLight, Color::Cyan, Color::CyanLight, Color::Default, Color::GrayDark, Color::GrayLight, Color::Green, Color::GreenLight, Color::Magenta, Color::MagentaLight, Color::Red, Color::RedLight, Color::White, Color::Yellow, Color::YellowLight, Color::Palette256, ftxui
+#include <ftxui/screen/color_info.hpp>  // for ColorInfo
+#include <ftxui/screen/screen.hpp>      // for Full, Screen
+#include <ftxui/screen/terminal.hpp>  // for ColorSupport, Color, Palette16, Palette256, TrueColor
 #include <ftxui/util/ref.hpp>  // for Ref
+#include <memory>              // for allocator, shared_ptr
+#include <utility>             // for move
+#include <vector>              // for vector
 
 class Mode {
  private:
@@ -22,8 +31,8 @@ class Mode {
     auto screen = ScreenInteractive::TerminalOutput();
 
     std::vector<std::string> entries = {
-        "PULL: 受信",
-        "PUSH: 送信",
+        "PULL: メッセージを受信",
+        "PUSH: メッセージを送信",
     };
     int selected = 0;
 
@@ -31,9 +40,24 @@ class Mode {
     option.on_enter = screen.ExitLoopClosure();
     auto menu = Menu(&entries, &selected, option);
 
-    screen.Loop(menu);
+    // The component tree:
+    auto component = Container::Vertical({
+        menu,
+    });
 
-    std::cout << "mode = " << selected << std::endl;
+    // Tweak how the component tree is rendered:
+    auto renderer = Renderer(component, [&] {
+      return vbox({
+                 hbox(text(" menu")),
+                 separator(),
+                 menu->Render(),
+             }) |
+             border | color(Color::Cyan1);
+    });
+
+    screen.Loop(renderer);
+
+    // std::cout << "mode = " << selected << std::endl;
 
     mode = selected;
 
@@ -47,6 +71,8 @@ class User {
 
  public:
   explicit User(const std::string key) { fetchName(key); }
+
+  std::string getName() const { return name; }
 
   void fetchName(std::string key) {
     using namespace ftxui;
@@ -79,7 +105,57 @@ class User {
                  separator(),
                  hbox(text("   "), button->Render()),
              }) |
-             border;
+             border | color(Color::Cyan1);
+    });
+
+    screen.Loop(renderer);
+
+    return;
+  }
+};
+
+class Message {
+ private:
+  std::string tx;
+
+ public:
+  explicit Message() {}
+
+  std::string getTx() const { return tx; }
+
+  void fetchText() {
+    using namespace ftxui;
+    const std::string key = "message";
+
+    auto screen = ScreenInteractive::TerminalOutput();
+
+    InputOption option;
+    option.on_enter = screen.ExitLoopClosure();
+    option.multiline = false;
+
+    // The basic input components:
+    Component input_name = Input(&tx, key, option);
+    Component button = Button("   NEXT >   ", [&] {
+      // ここにボタンが押された時の処理を書く
+      screen.Exit();
+    });
+
+    // The component tree:
+    auto component = Container::Vertical({
+        input_name,
+        button,
+    });
+
+    // Tweak how the component tree is rendered:
+    auto renderer = Renderer(component, [&] {
+      return vbox({
+                 hbox(text(" " + key + " : "), input_name->Render()),
+                 separator(),
+                 text(" " + key + " : " + tx),
+                 separator(),
+                 hbox(text("   "), button->Render()),
+             }) |
+             border | color(Color::Cyan1);
     });
 
     screen.Loop(renderer);
@@ -98,12 +174,23 @@ int main() {
   // 送信先を取得
   User to("to");
 
+  std::string query = "";
+
   if (m.getMode() == 0) {
     // PULL モード
+
+    // メッセージを取得
+    Message msg{};
+    msg.fetchText();
+
+    // query を作成
+    query = "send-to" + user.getName() + " " + to.getName() + " " + msg.getTx();
 
   } else {
     // PUSH モード
   }
+
+  std::cout << "query = " << query << std::endl;
 
   return 0;
 }
