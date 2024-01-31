@@ -99,19 +99,13 @@ int main() {
 
     string recv_msg = "";  // 受信メッセージ
 
-    for (;;) {
-      n = read(clnt_socket, buff, sizeof(buff));
-      if (n < 0) {
-        // 相手の通信が切断されている．
-        return -1;
-      }
-
-      recv_msg += buff;
-
-      if (n == 0 || buff[n - 1] == '\n' || buff[n - 1] == '\0') {
-        break;
-      }
+    n = read(clnt_socket, buff, sizeof(buff));
+    if (n < 0) {
+      // 相手の通信が切断されている．
+      return -1;
     }
+
+    recv_msg += buff;
 
     recv_msg.push_back('\0');
 
