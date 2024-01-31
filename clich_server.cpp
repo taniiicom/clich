@@ -157,6 +157,7 @@ int main() {
     }
 
     // 送信
+    std::cout << response << std::endl;
     n = write(clnt_socket, response.c_str(), response.size());
 
     // クライアントとの通信は終了したので、ソケットを閉じる。

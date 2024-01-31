@@ -282,7 +282,7 @@ class Communicator {
       using namespace std::chrono_literals;
 
       std::string reset_position;
-      for (int index = 0; index < 40; ++index) {
+      for (int index = 0; index < 30; ++index) {
         auto document = hbox({
             hbox({
                 text(" sending now "),
@@ -383,9 +383,13 @@ class Communicator {
     auto renderer = Renderer(component, [&] {
       return vbox({
                  hbox(text(" successfully sent. ")),
+                 separator(),
+                 hbox(text(" " + this->getRespnce())),
              }) |
              border | color(Color::Cyan1);
     });
+
+    std::cout << getRespnce() << std::endl;
 
     screen.Loop(renderer);
 
