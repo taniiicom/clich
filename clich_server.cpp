@@ -105,7 +105,7 @@ int main() {
       return -1;
     }
 
-    recv_msg += buff;
+    recv_msg = buff + '\0';
 
     string m = recv_msg;  // 受け取ったメッセージ
     string ip = inet_ntoa(clnt_addr.sin_addr);
