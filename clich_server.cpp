@@ -40,10 +40,12 @@ class Memory {
 
   void add(std::string to_from, std::string message) {
     memory.insert(std::make_pair(to_from, message));
+    std::cout << "Added: " << to_from << ":" << message << std::endl;
   }
 
   std::string get(std::string to_from) {
     std::string message = memory[to_from];
+    std::cout << "Get: " << to_from << ":" << message << std::endl;
     return message;
   }
 
@@ -164,7 +166,7 @@ int main() {
         return -1;
       }
 
-      std::string res = mem.get(words[1] + " " + words[2]);
+      std::string res = mem.get(words[1] + char(1) + words[2]);
 
       if (res == "") {
         response = "no message";
@@ -175,7 +177,7 @@ int main() {
       if (words.size() != 4) {
         return -1;
       }
-      mem.add(words[2] + " " + words[1], words[3]);
+      mem.add(words[2] + char(1) + words[1], words[3]);
 
       std::cout << words[2] + " " + words[1] << std::endl;
       std::cout << words[3] << std::endl;
