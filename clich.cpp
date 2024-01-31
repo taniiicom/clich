@@ -340,20 +340,12 @@ class Communicator {
       }
 
       // 署名
-      string signature = SIGN + "\n";
-      n = write(socketd, signature.c_str(), 9);
-
-      if (n <= 0) {
-        cout << "Failed to send a signature.\n";
-        return -1;
-      }
-
-      std::string request = query + "\n";
+      string request = SIGN + "\n" + query + "\0";
 
       // サーバにデータを送信する．
       n = write(
           socketd, request.c_str(),
-          query
+          request
               .size());  // 文字列の送信．第二引数は記憶域．第３引数は送信するByte数．
 
       if (n <= 0) {

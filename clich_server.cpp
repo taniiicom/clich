@@ -134,11 +134,11 @@ int main() {
     std::string response = "";
 
     for (std::string word; std::getline(iss, word, '\"');) {
-      if (*word.end() == ' ') {
+      if (words.size() && *word.end() == ' ') {
         word.pop_back();
       }
 
-      if (words.size()) {
+      if (word.size()) {
         words.push_back(word);
       }
     }
