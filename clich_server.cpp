@@ -153,7 +153,10 @@ int main() {
     }
 
     for (std::string word : words) {
-      std::cout << word << std::endl;
+      for (char c : word) {
+        std::cout << int(c) << ", ";
+      }
+      std::cout << std::endl;
     }
 
     if (words[0] == "get-from" || words[0] == "get-from ") {
