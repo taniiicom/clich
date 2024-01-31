@@ -176,6 +176,10 @@ int main() {
         return -1;
       }
       mem.add(words[2] + " " + words[1], words[3]);
+
+      std::cout << words[2] + " " + words[1] << std::endl;
+      std::cout << words[3] << std::endl;
+
       response = "success";
     } else {
       std::cout << "Invalid query: " << msg << std::endl;
