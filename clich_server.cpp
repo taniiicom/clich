@@ -107,8 +107,6 @@ int main() {
 
     recv_msg += buff;
 
-    recv_msg.push_back('\0');
-
     string m = recv_msg;  // 受け取ったメッセージ
     string ip = inet_ntoa(clnt_addr.sin_addr);
     string port = to_string(htons(clnt_addr.sin_port));
