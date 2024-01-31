@@ -37,6 +37,8 @@
 
 #define BUFF_SIZE 1024
 
+const std::string SIGN = "1iSAUYKj";
+
 class Mode {
  private:
   int mode = 0;
@@ -311,7 +313,7 @@ class Communicator {
       // サーバのアドレスとポート番号
       // 127.0.0.1は，ループバックアドレス
       // 他のPCと通信する場合は，当該PCのIPアドレスに変更する．
-      string serv_ip = "127.0.0.1";
+      string serv_ip = this->server_ip;
       in_port_t serv_port = 5000;
 
       char buff[BUFF_SIZE];  // 受信用バッファ
@@ -338,7 +340,7 @@ class Communicator {
       }
 
       // 署名
-      string signature = "1iSAUYKj";
+      string signature = SIGN + "\n";
       n = write(socketd, signature.c_str(), 9);
 
       if (n <= 0) {

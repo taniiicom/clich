@@ -16,6 +16,9 @@
 #include <vector>   // for vector
 
 #define BUFF_SIZE 1024
+
+const std::string SIGN = "1iSAUYKj";
+
 class Memory {
  private:
   std::map<std::string, std::string> memory;
@@ -127,7 +130,14 @@ int main() {
     std::istringstream iss(msg);
     std::vector<std::string> words;
 
-    string response = "";
+    // 署名を確認
+    if (std::string word; std::getline(iss, word, '\n')) {
+      if (word != SIGN) {
+        return -1;
+      }
+    }
+
+    std::string response = "";
 
     for (std::string word; std::getline(iss, word, '\"');) {
       if (*word.end() == ' ') {
