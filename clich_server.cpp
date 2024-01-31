@@ -154,6 +154,8 @@ int main() {
       }
       mem.add(words[2] + " " + words[1], words[3]);
       response = "success";
+    } else {
+      std::cout << "Invalid query: " << msg << std::endl;
     }
 
     // 送信
