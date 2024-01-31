@@ -19,6 +19,17 @@
 
 const std::string SIGN = "1iSAUYKj";
 
+#include <string>
+
+std::string trim(const std::string &str) {
+  size_t first = str.find_first_not_of(' ');
+  if (std::string::npos == first) {
+    return str;
+  }
+  size_t last = str.find_last_not_of(' ');
+  return str.substr(first, (last - first + 1));
+}
+
 class Memory {
  private:
   std::map<std::string, std::string> memory;
@@ -132,8 +143,8 @@ int main() {
     std::string response = "";
 
     for (std::string word; std::getline(iss, word, '\"');) {
-      if (words.size() && *word.end() == ' ') {
-        word.pop_back();
+      if (word.size()) {
+        word = trim(word);
       }
 
       if (word.size() && word != " ") {
@@ -149,7 +160,14 @@ int main() {
       if (words.size() != 3) {
         return -1;
       }
-      response = words[1] + ">" + mem.get(words[1] + " " + words[2]);
+
+      std::string res = mem.get(words[1] + " " + words[2]);
+
+      if (res == "") {
+        response = "no message";
+      } else {
+        response = words[1] + ">" + res;
+      }
     } else if (words[0] == "send-to" || words[0] == "send-to ") {
       if (words.size() != 4) {
         return -1;
