@@ -108,7 +108,7 @@ int main() {
 
       recv_msg += buff;
 
-      if (n == 0 || buff[n - 1] == '\0') {
+      if (n == 0 || buff[n - 1] == '\n' || buff[n - 1] == '\0') {
         break;
       }
     }

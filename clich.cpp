@@ -348,9 +348,11 @@ class Communicator {
         return -1;
       }
 
+      std::string request = query + "\n";
+
       // サーバにデータを送信する．
       n = write(
-          socketd, query.c_str(),
+          socketd, request.c_str(),
           query
               .size());  // 文字列の送信．第二引数は記憶域．第３引数は送信するByte数．
 
