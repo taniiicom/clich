@@ -16,4 +16,6 @@ endif()
 
 # 出力ファイルを指定
 add_executable(clich clich.cpp)
+add_executable(clich_server clich_server.cpp)
 target_link_libraries(clich PRIVATE ftxui::component)
+target_link_libraries(clich_server PRIVATE ftxui::component)
