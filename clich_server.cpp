@@ -156,6 +156,7 @@ int main() {
       response = "success";
     } else {
       std::cout << "Invalid query: " << msg << std::endl;
+      std::cout << words[0] << std::endl;
     }
 
     // 送信
