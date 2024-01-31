@@ -39,7 +39,7 @@ class Memory {
   ~Memory() {}
 
   void add(std::string to_from, std::string message) {
-    memory.insert(to_from, message);
+    memory.insert(std::make_pair(to_from, message));
     std::cout << "Added: " << to_from << ":" << message << std::endl;
   }
 
