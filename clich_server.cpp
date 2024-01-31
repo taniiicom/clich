@@ -138,7 +138,7 @@ int main() {
         word.pop_back();
       }
 
-      if (word.size()) {
+      if (word.size() && word != " ") {
         words.push_back(word);
       }
     }
