@@ -143,12 +143,12 @@ int main() {
       }
     }
 
-    if (words[0] == "get-from") {
+    if (words[0] == "get-from" || words[0] == "get-from ") {
       if (words.size() != 3) {
         return -1;
       }
       response = words[1] + ">" + mem.get(words[1] + " " + words[2]);
-    } else if (words[0] == "send-to") {
+    } else if (words[0] == "send-to" || words[0] == "send-to ") {
       if (words.size() != 4) {
         return -1;
       }
