@@ -143,6 +143,10 @@ int main() {
       }
     }
 
+    for (std::string word : words) {
+      std::cout << word << std::endl;
+    }
+
     if (words[0] == "get-from" || words[0] == "get-from ") {
       if (words.size() != 3) {
         return -1;
