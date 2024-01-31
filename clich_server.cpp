@@ -53,7 +53,6 @@ int main() {
   int n;                                    // 戻り値の保存用
 
   time_t now;  // 時間
-  char buff[BUFF_SIZE];
 
   // パラメータの初期化
   serv_addr.sin_family = AF_INET;
@@ -84,6 +83,7 @@ int main() {
   // クライアントから接続要求があれば、順次対応
   while (true) {
     Memory mem{};
+    char buff[BUFF_SIZE];
 
     // accept(.)により、クライアントからの接続要求を受け付ける。
     // 戻り値はクライアントとのデータ通信用ソケット記述子、エラーの場合は０以下の値が返される。
