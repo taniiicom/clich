@@ -39,7 +39,7 @@ class Memory {
   ~Memory() {}
 
   void add(std::string to_from, std::string message) {
-    memory.insert(std::make_pair(to_from, message));
+    memory.insert(to_from, message);
     std::cout << "Added: " << to_from << ":" << message << std::endl;
   }
 
@@ -93,9 +93,11 @@ int main() {
     return -1;
   }
 
+  // メモリ初期化
+  Memory mem{};
+
   // クライアントから接続要求があれば、順次対応
   while (true) {
-    Memory mem{};
     char buff[BUFF_SIZE] = {0};
 
     // accept(.)により、クライアントからの接続要求を受け付ける。
